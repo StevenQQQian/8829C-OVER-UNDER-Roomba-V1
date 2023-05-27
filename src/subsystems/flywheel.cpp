@@ -21,9 +21,9 @@ void Flywheel_Controller::initialize() {
 }
 
 
-void Flywheel_Controller::update() {
+void update() {
     while (true) {
-        this->current_rpm = fw.get_actual_velocity() * 5;
+        flywheel.current_rpm = fw.get_actual_velocity() * 5;
         pros::delay(10);
     }
 }
@@ -41,9 +41,9 @@ double Flywheel_Controller::calculate(double target_rpm) {
     return power;   
 }
 
-void Flywheel_Controller::give_power(double rpm) {
+void Flywheel_Controller::give_power() {
     while (enable) {
-        fw.move_velocity(this->calculate(rpm));
+        fw.move_velocity(this->calculate(this->target_rpm));
         pros::delay(10);
     }
 }

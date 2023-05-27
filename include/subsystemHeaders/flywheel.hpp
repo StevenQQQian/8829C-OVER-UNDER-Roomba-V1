@@ -1,8 +1,10 @@
-
+#pragma once
 
 class Flywheel_Controller {
     public: 
     bool enable;
+    double target_rpm;
+    double current_rpm;
     /**
     @brief Construct a new Flywheel Controller
     @param kP proportional gain, multiplied by error and being added to the output. 
@@ -11,11 +13,6 @@ class Flywheel_Controller {
     */
         Flywheel_Controller(double kP, double kI, double kD);
 
-
-    /**
-    @brief updates the current rpm of the flywheel
-    */
-        void update();
 
     /**
     @brief Calculate the power to the flywheel motor
@@ -33,12 +30,10 @@ class Flywheel_Controller {
     /**
     @brief Task, give the flywheel power continuously 
     */
-        void give_power(double rpm);
+        void give_power();
 
     private: 
-
-
-        double current_rpm;
+        
         double kP;
         double kI;
         double kD;
@@ -47,3 +42,5 @@ class Flywheel_Controller {
         double derivative;
         double prev_error;
 };
+
+extern void update();

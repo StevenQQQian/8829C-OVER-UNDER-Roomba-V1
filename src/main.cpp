@@ -1,4 +1,6 @@
 #include "main.h"
+#include "pros/llemu.hpp"
+#include "pros/rtos.hpp"
 #include "lemlib/api.hpp"
 
 /**
@@ -17,6 +19,17 @@ void on_center_button() {
 	}
 }
 
+void screen() {
+    // loop forever
+    while (true) {
+        lemlib::Pose pose = eason.getPose(); // get the current position of the robot
+        pros::lcd::print(0, "x: %f", pose.x); // print the x position
+        pros::lcd::print(1, "y: %f", pose.y); // print the y position
+        pros::lcd::print(2, "heading: %f", pose.theta); // print the heading
+        pros::delay(10);
+    }
+}
+
 /**
  * Runs initialization code. This occurs as soon as the program is started.
  *
@@ -24,12 +37,15 @@ void on_center_button() {
  * to keep execution time for this mode under a few seconds.
  */
 void initialize() {
-	Flywheel_Controller eason(0, 0, 0);
-	eason.enable = true;
+	pros::Task update_power(update);
+	// flywheel.enable = true; 
 	pros::lcd::initialize();
 	pros::lcd::set_text(1, "Eason is L");
-
+	eason.calibrate();
+	pros::Task screenTask(screen);
 	pros::lcd::register_btn1_cb(on_center_button);
+	pros::lcd::clear();
+	eason.setPose(0, 0, 0);
 }
 
 /**
@@ -61,7 +77,9 @@ void competition_initialize() {}
  * will be stopped. Re-enabling the robot will restart the task, not re-start it
  * from where it left off.
  */
-void autonomous() {}
+void autonomous() {
+	test();
+}
 
 /**
  * Runs the operator control code. This function will be started in its own task
@@ -77,5 +95,9 @@ void autonomous() {}
  * task, not resume it from where it left off.
  */
 void opcontrol() {
-
+	while (true) {
+		setDriveMotors();
+		setIntakeMotors();
+		pros::delay(10);
+	}
 }
