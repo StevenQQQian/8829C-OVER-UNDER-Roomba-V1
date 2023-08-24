@@ -83,6 +83,9 @@ void opcontrol(void);
 #include "subsystemHeaders/drive.hpp"
 #include "subsystemHeaders/flywheel.hpp"
 #include "subsystemHeaders/autons.hpp"
+#include "subsystemHeaders/expand.hpp"
+#include "subsystemHeaders/catapult.hpp"
+#include "subsystemHeaders/clamp.hpp"
 //#include <iostream>
 #endif
 

@@ -1,7 +1,9 @@
 #include "main.h"
 #include "pros/llemu.hpp"
+#include "pros/motors.h"
 #include "pros/rtos.hpp"
 #include "lemlib/api.hpp"
+#include "subsystemHeaders/flywheel.hpp"
 
 /**
  * A callback function for LLEMU's center button.
@@ -9,15 +11,7 @@
  * When this callback is fired, it will toggle line 2 of the LCD text between
  * "I was pressed!" and nothing.
  */
-void on_center_button() {
-	static bool pressed = false;
-	pressed = !pressed;
-	if (pressed) {
-		pros::lcd::set_text(2, "I was pressed!");
-	} else {
-		pros::lcd::clear_line(2);
-	}
-}
+
 
 void screen() {
     // loop forever
@@ -37,15 +31,25 @@ void screen() {
  * to keep execution time for this mode under a few seconds.
  */
 void initialize() {
-	pros::Task update_power(update);
-	// flywheel.enable = true; 
-	pros::lcd::initialize();
-	pros::lcd::set_text(1, "Eason is L");
-	eason.calibrate();
+	// pros::lcd::register_btn1_cb(on_center_button);
+	flywheel.initialize();
+	flywheel.enable = true;
+
 	pros::Task screenTask(screen);
-	pros::lcd::register_btn1_cb(on_center_button);
+	pros::Task print_fw(print);
+	pros::Task fwUpdate(update);
+	pros::Task fwPower(give_power);
+	lB.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+	lMf.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+	lMb.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+	lF.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+	rB.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+	rMf.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+	rMb.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+	rF.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 	pros::lcd::clear();
-	eason.setPose(0, 0, 0);
+	pros::lcd::initialize();
+	// pros::lcd::set_text(1, "Eason is L");
 }
 
 /**
@@ -78,6 +82,7 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
+	// eason.calibrate();
 	test();
 }
 
@@ -95,9 +100,22 @@ void autonomous() {
  * task, not resume it from where it left off.
  */
 void opcontrol() {
+	// eason.calibrate();
+	// eason.setPose(0, 0, 0);
+	enable = false;
+	// setCatapult(80);
+
 	while (true) {
+		// if (limit.get_value() == 1) {
+		// 	setCatapult(0);
+		// 	hold = true;
+		// }
+		fwM();
 		setDriveMotors();
-		setIntakeMotors();
+		// setIntakeMotors();
+		setCatapultMotor();
+		matchLoadBar();
+		wingExpansion();
 		pros::delay(10);
 	}
 }
