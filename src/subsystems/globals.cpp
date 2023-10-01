@@ -6,33 +6,38 @@
 #include "pros/misc.hpp"
 #include "pros/motors.h"
 #include "pros/motors.hpp"
+#include "pros/rotation.hpp"
 #include "subsystemHeaders/flywheel.hpp"
 #include <cstddef>
 
-pros::Motor lB(0, pros::E_MOTOR_GEARSET_18, true);
-pros::Motor lMf(0, pros::E_MOTOR_GEARSET_18, true);
-pros::Motor lMb(0, pros::E_MOTOR_GEARSET_18, true);
-pros::Motor lF(0, pros::E_MOTOR_GEARSET_18, true);
-pros::Motor rB(0, pros::E_MOTOR_GEARSET_18, false);
-pros::Motor rMf(0, pros::E_MOTOR_GEARSET_18, false);
-pros::Motor rMb(0, pros::E_MOTOR_GEARSET_18, false);
-pros::Motor rF(0, pros::E_MOTOR_GEARSET_18, false);
+pros::Motor lB(7, pros::E_MOTOR_GEARSET_06, true);
+pros::Motor lM(6, pros::E_MOTOR_GEARSET_06, true);
+// pros::Motor lMb(16, pros::E_MOTOR_GEARSET_18, false);
+pros::Motor lF(10, pros::E_MOTOR_GEARSET_06, true);
+pros::Motor rB(18, pros::E_MOTOR_GEARSET_06, false);
+pros::Motor rM(16, pros::E_MOTOR_GEARSET_06, false);
+// pros::Motor rMb(14, pros::E_MOTOR_GEARSET_18, true);
+pros::Motor rF(20, pros::E_MOTOR_GEARSET_06, false);
 
-pros::MotorGroup left_motors({lF, lMf, lMb, lB});
-pros::MotorGroup right_motors({rF, rMf, rMb, rB});
+pros::MotorGroup left_motors({lF, lM, lB});
+pros::MotorGroup right_motors({rF, rM, rB});
 
 // pros::Motor intake(1, pros::E_MOTOR_GEARSET_18, true);
 // pros::Motor intake_2(3, pros::E_MOTOR_GEARSET_18, false);
 
-pros::Motor catapult(2, pros::E_MOTOR_GEARSET_36, false);
+pros::Motor catapult(0, pros::E_MOTOR_GEARSET_36, false);
 
-pros::Motor fw(18, pros::E_MOTOR_GEARSET_06, true);
+pros::Motor fw(21, pros::E_MOTOR_GEARSET_06, true);
 
 pros::Controller master(pros::E_CONTROLLER_MASTER);
 
-pros::Imu inertial_sensor(5);
+pros::Imu inertial_sensor(0);
 
-pros::ADIDigitalIn limit('D');
+pros::Rotation arm_rot(8);
+
+pros::ADIDigitalIn limit('O');
+
+pros::Motor arm(9, pros::E_MOTOR_GEARSET_36, true);
 
 
 lemlib::Drivetrain_t drivetrain {
@@ -73,11 +78,12 @@ lemlib::ChassisController_t angularController {
     0 // slew rate
 };
 
-Flywheel_Controller flywheel(4, 0.4,19291, 0);
+Flywheel_Controller flywheel(2, 0.003,0, 0.85);
 
 lemlib::Chassis eason(drivetrain, lateralController, angularController, sensors);
 
-pros::ADIDigitalOut hook('A', LOW);
-pros::ADIDigitalOut wings('B', LOW);
-pros::ADIDigitalOut clamp('C', LOW);
+pros::ADIDigitalOut hook('O', LOW);
+pros::ADIDigitalOut wings_L('C', LOW);
+pros::ADIDigitalOut wings_R('H', LOW);
+pros::ADIDigitalOut clamp('O', LOW);
 

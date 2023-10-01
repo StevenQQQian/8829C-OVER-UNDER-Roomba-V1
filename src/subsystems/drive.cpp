@@ -1,14 +1,14 @@
 #include "main.h"
 
 
-void setDrive(double left, double right) {
+void setDrive(double left, double right) {    
     lF.move(left);
-    lMb.move(left);
-    lMf.move(left);
+    lM.move(left);
+    // lMf.move(left);
     lB.move(left);
     rF.move(right);
-    rMf.move(right);
-    rMb.move(right);
+    rM.move(right);
+    // rMb.move(right);
     rB.move(right);
 }
 

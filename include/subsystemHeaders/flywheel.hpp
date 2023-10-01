@@ -39,6 +39,7 @@ class Flywheel_Controller {
         void setTargetRpm(double rpm);
 
 
+
         
 
     private: 
@@ -62,3 +63,5 @@ void print();
 void give_power();
 
 extern bool status;
+
+void bang_bang();

@@ -4,16 +4,17 @@
 #include "pros/misc.hpp"
 #include "pros/motors.hpp"
 #include "flywheel.hpp"
+#include "pros/rotation.hpp"
 
 
 // Drivetrain Motors
 extern pros::Motor lB;
-extern pros::Motor lMb;
-extern pros::Motor lMf;
+// extern pros::Motor lMb;
+extern pros::Motor lM;
 extern pros::Motor lF;
 extern pros::Motor rB;
-extern pros::Motor rMf;
-extern pros::Motor rMb;
+extern pros::Motor rM;
+// extern pros::Motor rMb;
 extern pros::Motor rF;
 
 // MotorGroups
@@ -29,6 +30,8 @@ extern pros::Motor catapult;
 extern pros::Motor fw;
 
 extern Flywheel_Controller flywheel;
+
+extern pros::Motor arm;
 
 
 
@@ -48,12 +51,17 @@ extern pros::Imu inertial_sensor;
 
 extern pros::ADIDigitalIn limit;
 
+extern pros::Rotation arm_rot;
+
 // Drivetrain
 extern lemlib::Chassis eason;
 
 
+
+
 // Pneumatics
 extern pros::ADIDigitalOut hook;
-extern pros::ADIDigitalOut wings;
+extern pros::ADIDigitalOut wings_L;
+extern pros::ADIDigitalOut wings_R;
 
 extern pros::ADIDigitalOut clamp;

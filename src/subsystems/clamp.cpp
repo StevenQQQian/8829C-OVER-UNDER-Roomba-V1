@@ -4,7 +4,7 @@
 bool clamp_status = false;
 
 void setClampPistons() {
-    if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_R1)) {
+    if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)) {
         if (clamp_status == false) {
             clamp.set_value(true);
             clamp_status = true;

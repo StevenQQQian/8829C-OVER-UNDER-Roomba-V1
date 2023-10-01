@@ -30,7 +30,7 @@ void Flywheel_Controller::initialize() {
 
 void update() {
     while (true) {
-        flywheel.current_rpm = fw.get_actual_velocity() * 5;
+        flywheel.current_rpm = fw.get_actual_velocity() * 6;
         pros::delay(10);
     }
 }
@@ -39,11 +39,11 @@ void update() {
 
 
 double Flywheel_Controller::calculate(double target_rpm) {
-    this->error = target_rpm - this->current_rpm;
-    this->integral += this->error;
-    this->derivative = this->error - this->prev_error;
+    this->error = target_rpm - this->current_rpm; // Calculates the current error from the current rpm to the target. 
+    this->integral += this->error; // Calculates the integrations according to the errors. 
+    this->derivative = this->error - this->prev_error; // Calculates the derivatives according to the current error and previous error. 
 
-    double rpm = (this->ff * target_rpm) + (error * this->kP) + (integral * this->kI); // + (derivative * this->kD);
+    double rpm = (ff * this->target_rpm) + (error * this->kP) + (integral * this->kI) + (derivative * this->kD);
 
     double velocity = rpm / (3600.0 / 127.0);
 
@@ -60,7 +60,7 @@ void give_power() {
         }
 
         else {
-            fw.move_velocity(flywheel.calculate(flywheel.target_rpm));
+            fw.move(flywheel.calculate(flywheel.target_rpm));
         }
         if (flywheel.current_voltage > 127) {
             flywheel.current_voltage = 127;
@@ -82,6 +82,18 @@ void Flywheel_Controller::setTargetRpm(double rpm) {
 void print() {
     while (true) {
         pros::lcd::set_text(5, "Flywhale power: " + std::to_string(flywheel.current_rpm));
+        pros::lcd::set_text(7, "Port 12: " + std::to_string(lB.get_voltage()));
         pros::delay(100);
+    }
+}
+
+void bang_bang() {
+    while (true) {
+        if ((fw.get_actual_velocity() * 5) < ((flywheel.target_rpm)-200)) { // Condition when flywheel speed is more than 300 rpm slower than the target
+            fw.move(127); // Set flywheel motor to max acceleration
+        }
+        else { // Condition when flywheel speed is close to or faster than the target speed
+            fw.move((flywheel.target_rpm / (3600.0 / 127.0))); // Set flywheel motor to the target rpm voltage. 
+        }
     }
 }

@@ -34,19 +34,23 @@ void initialize() {
 	// pros::lcd::register_btn1_cb(on_center_button);
 	flywheel.initialize();
 	flywheel.enable = true;
+	arm_rot.reset();
+	arm_rot.reset_position();
+	arm_status = false;
 
 	pros::Task screenTask(screen);
 	pros::Task print_fw(print);
 	pros::Task fwUpdate(update);
 	pros::Task fwPower(give_power);
 	lB.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
-	lMf.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
-	lMb.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+	lM.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+	// lMb.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 	lF.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 	rB.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
-	rMf.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
-	rMb.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+	rM.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+	// rMb.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 	rF.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+	arm.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 	pros::lcd::clear();
 	pros::lcd::initialize();
 	// pros::lcd::set_text(1, "Eason is L");
@@ -108,14 +112,19 @@ void opcontrol() {
 	while (true) {
 		// if (limit.get_value() == 1) {
 		// 	setCatapult(0);
-		// 	hold = true;
+			// hold = true;
 		// }
 		fwM();
 		setDriveMotors();
 		// setIntakeMotors();
-		setCatapultMotor();
+		// setCatapultMotor();
 		matchLoadBar();
 		wingExpansion();
+		LWing();
+		// setClampPistons();
+		armAngle();
+
+
 		pros::delay(10);
 	}
 }

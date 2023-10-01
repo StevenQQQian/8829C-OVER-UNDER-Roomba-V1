@@ -86,6 +86,7 @@ void opcontrol(void);
 #include "subsystemHeaders/expand.hpp"
 #include "subsystemHeaders/catapult.hpp"
 #include "subsystemHeaders/clamp.hpp"
+#include "subsystemHeaders/arm.hpp"
 //#include <iostream>
 #endif
 
