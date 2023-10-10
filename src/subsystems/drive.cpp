@@ -52,8 +52,8 @@ void setDriveMotors() {
     if (master.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X) < 0) {
         turn = -turn;
     }
-    double leftPower = power + turn;
-    double rightPower = power - turn;
+    double leftPower = 0.95 * (power + turn);
+    double rightPower = 0.95 * (power - turn);
     
     // Power Setting
     setDrive(leftPower, rightPower);

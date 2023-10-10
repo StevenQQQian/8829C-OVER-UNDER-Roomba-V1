@@ -10,14 +10,14 @@
 #include "subsystemHeaders/flywheel.hpp"
 #include <cstddef>
 
-pros::Motor lB(7, pros::E_MOTOR_GEARSET_06, true);
-pros::Motor lM(6, pros::E_MOTOR_GEARSET_06, true);
+pros::Motor lB(5, pros::E_MOTOR_GEARSET_06, true);
+pros::Motor lM(4, pros::E_MOTOR_GEARSET_06, true);
 // pros::Motor lMb(16, pros::E_MOTOR_GEARSET_18, false);
-pros::Motor lF(10, pros::E_MOTOR_GEARSET_06, true);
-pros::Motor rB(18, pros::E_MOTOR_GEARSET_06, false);
-pros::Motor rM(16, pros::E_MOTOR_GEARSET_06, false);
+pros::Motor lF(6, pros::E_MOTOR_GEARSET_06, true);
+pros::Motor rB(15, pros::E_MOTOR_GEARSET_06, false);
+pros::Motor rM(14, pros::E_MOTOR_GEARSET_06, false);
 // pros::Motor rMb(14, pros::E_MOTOR_GEARSET_18, true);
-pros::Motor rF(20, pros::E_MOTOR_GEARSET_06, false);
+pros::Motor rF(16, pros::E_MOTOR_GEARSET_06, false);
 
 pros::MotorGroup left_motors({lF, lM, lB});
 pros::MotorGroup right_motors({rF, rM, rB});
@@ -27,13 +27,13 @@ pros::MotorGroup right_motors({rF, rM, rB});
 
 pros::Motor catapult(0, pros::E_MOTOR_GEARSET_36, false);
 
-pros::Motor fw(21, pros::E_MOTOR_GEARSET_06, true);
+pros::Motor fw(17, pros::E_MOTOR_GEARSET_06, true);
 
 pros::Controller master(pros::E_CONTROLLER_MASTER);
 
-pros::Imu inertial_sensor(0);
+pros::Imu inertial_sensor(18);
 
-pros::Rotation arm_rot(8);
+pros::Rotation arm_rot(20);
 
 pros::ADIDigitalIn limit('O');
 
@@ -45,7 +45,7 @@ lemlib::Drivetrain_t drivetrain {
     &right_motors,
     15, // tracking width
     3.25,  // wheel diameter
-    333 // wheel rpm
+    360 // wheel rpm
 };
 
 lemlib::OdomSensors_t sensors {
@@ -78,12 +78,12 @@ lemlib::ChassisController_t angularController {
     0 // slew rate
 };
 
-Flywheel_Controller flywheel(2, 0.003,0, 0.85);
+Flywheel_Controller flywheel(2.3, 0.023,0, 0.95);
 
 lemlib::Chassis eason(drivetrain, lateralController, angularController, sensors);
 
 pros::ADIDigitalOut hook('O', LOW);
-pros::ADIDigitalOut wings_L('C', LOW);
-pros::ADIDigitalOut wings_R('H', LOW);
+pros::ADIDigitalOut wings_L('H', LOW);
+pros::ADIDigitalOut wings_R('C', LOW);
 pros::ADIDigitalOut clamp('O', LOW);
 

@@ -17,12 +17,29 @@ void fwM() {
     {
         if (status==false)
         {
-            flywheel.setTargetRpm(2500); // Give the flywheel motor a consistent speed of 100V. 
+            flywheel.setTargetRpm(2023); // Give the flywheel motor a consistent speed of 100V. 
+            // fw.move(82);
             status = true;
         }
 
         else if (status==true) {
             flywheel.setTargetRpm(0); // Stop the flywheel motor by coasting. 
+            // fw.move(0);
+            status = false;
+        }
+    }
+
+    else if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)) {
+        if (status==false)
+        {
+            flywheel.setTargetRpm(-2023); // Give the flywheel motor a consistent speed of 100V. 
+            // fw.move(-82);
+            status = true;
+        }
+
+        else if (status==true) {
+            flywheel.setTargetRpm(0); // Stop the flywheel motor by coasting. 
+            // fw.move(0);
             status = false;
         }
     }

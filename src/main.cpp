@@ -32,16 +32,20 @@ void screen() {
  */
 void initialize() {
 	// pros::lcd::register_btn1_cb(on_center_button);
+	eason.calibrate();
 	flywheel.initialize();
 	flywheel.enable = true;
 	arm_rot.reset();
 	arm_rot.reset_position();
-	arm_status = false;
+	// arm_status = false;
+
+	
 
 	pros::Task screenTask(screen);
 	pros::Task print_fw(print);
 	pros::Task fwUpdate(update);
-	pros::Task fwPower(give_power);
+	pros::Task fwPower(bang_bang);
+	pros::Task arm_aut(armAuton);
 	lB.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 	lM.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 	// lMb.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
@@ -86,8 +90,11 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
-	// eason.calibrate();
-	test();
+	// arm_status = true;
+	// test();
+	// nonMatchLoad();
+	// matchLoad();
+	nonMatchLoad_ELIM();
 }
 
 /**
@@ -104,6 +111,7 @@ void autonomous() {
  * task, not resume it from where it left off.
  */
 void opcontrol() {
+	arm_status = false;
 	// eason.calibrate();
 	// eason.setPose(0, 0, 0);
 	enable = false;
