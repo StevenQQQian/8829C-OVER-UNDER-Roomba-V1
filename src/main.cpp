@@ -94,7 +94,8 @@ void autonomous() {
 	// test();
 	// nonMatchLoad();
 	// matchLoad();
-	nonMatchLoad_ELIM();
+	// nonMatchLoad_ELIM();
+	skills();
 }
 
 /**
